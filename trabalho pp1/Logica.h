@@ -18,17 +18,16 @@ typedef enum { False, True } bool;
 typedef struct L_Pref {
     char* nomeJogador;
     int numero;
-    char* pref1;
-    int pont1;
-    char* pref2;
-    int pont2;
-    char* pref3;
-    int pont3;
-} l_Pref;
+    char* preferencias[5];
+    int* pontuacoes[5];
+} playerPref;
+
+
 //Alinea 2
 
 //sub-list
 typedef struct S_Player {
+    int numero;
     char* nomeJogador;
     int pontuacao;
     bool atribuda;

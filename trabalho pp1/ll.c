@@ -181,3 +181,18 @@ int ContainsRec(ListElem head, void* data) {
 		else return 0;
 	}
 }
+
+ListElem GoToIndex(ListElem head, int index) {
+	if (head != NULL) {
+		if (index = 0) return head;
+		else GoToIndex(head, index - 1);
+	}
+	else return NULL;
+}
+
+void* ReturnData(ListElem head) {
+	if (head == NULL) return NULL;
+	else {
+		return head->data;
+	}
+}

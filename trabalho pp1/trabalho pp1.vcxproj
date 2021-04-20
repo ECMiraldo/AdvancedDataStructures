@@ -139,11 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="File.C" />
     <ClCompile Include="ll.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Logica.c" />
     <ClCompile Include="Examples.c" />
     <ClCompile Include="Examples.h" />
+    <ClCompile Include="File.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logica.h" />

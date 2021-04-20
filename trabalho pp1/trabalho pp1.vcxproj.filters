@@ -30,6 +30,12 @@
     <ClCompile Include="Examples.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="File.C">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="File.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ll.h">
