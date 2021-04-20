@@ -141,8 +141,12 @@
   <ItemGroup>
     <ClCompile Include="ll.c" />
     <ClCompile Include="Main.c" />
+    <ClCompile Include="Logica.c" />
+    <ClCompile Include="Examples.c" />
+    <ClCompile Include="Examples.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Logica.h" />
     <ClInclude Include="ll.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

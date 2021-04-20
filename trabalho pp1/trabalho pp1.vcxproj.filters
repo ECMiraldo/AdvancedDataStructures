@@ -21,9 +21,21 @@
     <ClCompile Include="ll.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Logica.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Examples.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Examples.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logica.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,5 @@
+#pragma once
+
 typedef struct sListElem {
 	void *data;
 	struct sListElem *next;
@@ -35,3 +37,11 @@ ListElem removeItemIterative(ListElem head, void *data, int (*compare)(void *dat
 // Removes the first item on the list that compares positively with *data through function compare, recursively
 ListElem removeItemRecursive(ListElem head, void *data, int (*compare)(void *data1, void *data2));
 
+// Removes all items by the filter function condition
+ListElem Filter(ListElem head, int (*rmv)(void* data));
+
+// Returns node of specified data, if said data exists in the list
+ListElem FindItem(ListElem head, void* data1);
+
+// Returns 0 if the list contains a node with said data, 1 if it doesnt
+int ContainsRec(ListElem head, void* data);

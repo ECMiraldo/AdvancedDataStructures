@@ -1,7 +1,8 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "Logica.h"
 #include "ll.h"
 
 ListElem addItemHead(ListElem head, void *data) {
@@ -148,3 +149,35 @@ ListElem addItemOrderedRecursive(ListElem head, void *data, int (*compare)(void 
 	return head;
 }
 
+ListElem Filter(ListElem head, int (*rmv)(void* data)) {
+	ListElem aux;
+
+	if (head == NULL)
+		return NULL;
+
+	if (rmv(head->data) == 1) {
+		aux = head->next;
+		free(head);
+		return Filter(aux, rmv);
+	}
+	else {
+		head->next = Filter(head->next, rmv);
+		return head;
+	}
+}
+
+ListElem FindItem(ListElem head, void* data1) {
+	if (head == NULL) return NULL;
+	else {
+		if (data1 == head->data) return head;
+		else head = head->next;
+	}
+}
+
+int ContainsRec(ListElem head, void* data) {
+	if (head == NULL) return 1;
+	else {
+		if (data != head->data) ContainsRec(head->next, data);
+		else return 0;
+	}
+}
