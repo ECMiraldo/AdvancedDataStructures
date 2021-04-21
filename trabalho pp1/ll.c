@@ -184,7 +184,7 @@ int ContainsRec(ListElem head, void* data) {
 
 ListElem GoToIndex(ListElem head, int index) {
 	if (head != NULL) {
-		if (index = 0) return head;
+		if (index += 0) return head;
 		else GoToIndex(head, index - 1);
 	}
 	else return NULL;

@@ -8,7 +8,8 @@ ListElem GunSnoc(char* tipoArma, int qnt, ListElem player) {
     gun->quantidade = qnt;
     gun->player = player;
 
-    ListElem gunList = addItemLastRecursive(gunList, (s_Gun*)gun);
+    ListElem gunList = NULL;
+    gunList = addItemLastRecursive(gunList, (s_Gun*)gun);
     return gunList;
 }
 
@@ -17,9 +18,10 @@ ListElem PlayerSnoc(int n, char nome, int pont, bool at) {
     player->numero = n;
     player->nomeJogador = nome;
     player->pontuacao = pont;
-    player->atribuda = False;
+    player->atribuda = false;
 
-    ListElem playerList = addItemLastRecursive(playerList, (s_Player*)player);
+    ListElem playerList = NULL;
+    playerList = addItemLastRecursive(playerList, (s_Player*)player);
     return playerList;
 }
 
@@ -73,10 +75,10 @@ char** GetAllGuns(ListElem list) {
 }
 
 
-ListElem MainlistCons(ListElem list) {
-    playerPref* prefList = (playerPref*)list->data;
-
-    ListElem main = GunCons
-    Main->data = ReturnData(Main);
-
-}
+//ListElem MainlistCons(ListElem list) {
+//    playerPref* prefList = (playerPref*)list->data;
+//
+//    ListElem main = GunCons
+//    Main->data = ReturnData(Main);
+//
+//}
