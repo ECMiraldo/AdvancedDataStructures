@@ -19,9 +19,10 @@ typedef struct L_Pref {
     char* nomeJogador;
     int numero;
     char* preferencias[5];
-    int* pontuacoes[5];
+    int pontuacoes[5];
 } playerPref;
 
+playerPref* EmptyPref();
 
 //Alinea 2
 

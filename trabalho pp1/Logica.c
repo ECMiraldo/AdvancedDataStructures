@@ -2,6 +2,31 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Logica.h"
 
+playerPref* Constructor(int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3) {
+    playerPref* aux = (playerPref*)malloc(sizeof(playerPref));
+    aux->numero = numero;
+    aux->nomeJogador = nomeJogador;
+    aux->preferencias[0] = pref1;
+    aux->pontuacoes[0] = pont1;
+    aux->preferencias[1] = pref2;
+    aux->pontuacoes[1] = pont2;
+    aux->preferencias[2] = pref3;
+    aux->pontuacoes[2] = pont3;
+    return aux;
+}
+
+playerPref* EmptyPref() {
+    playerPref* aux = (playerPref*)malloc(sizeof(playerPref));
+    aux->nomeJogador = NULL;
+    aux->numero = 0;
+    for (int i = 0; i < 5; i++) { //TO DO: NOT HARDCODED
+        aux->preferencias[i] = NULL;
+        aux->pontuacoes[i] = NULL;
+    }
+    return aux;
+}
+
+
 ListElem GunSnoc(char* tipoArma, int qnt, ListElem player) {
     s_Gun* gun = NULL;
     gun->tipoArma = tipoArma;
