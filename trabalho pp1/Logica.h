@@ -15,14 +15,31 @@
 
 //Alinea 1
 
-typedef struct L_Pref {
-    char* nomeJogador;
-    int numero;
-    char* preferencias[5];
-    int pontuacoes[5];
-} playerPref;
+typedef struct
+{
+    char gun[50]; // arma de combate
+    int score; // 0 a 100
+} Pref;
 
-playerPref* EmptyPref();
+typedef struct dados
+{
+    int playerid;
+    char nickname[50];
+    Pref preferences[5]; // ordem de preferências (máximo de 5)
+}player;
+
+//Alinea 1 functions
+
+player* EmptyPlayer();
+player* Constructor(int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3, char* pref4, int pont4, char* pref5, int pont5);
+//Used to print player's data as show function
+void showPlayer(player* data);
+//Returns a list of char* with all the guns;
+ListElem GetAllGuns(ListElem head);
+//Prints elements of a list of char*
+void PrintGuns(char* data);
+
+int igual(void* data1, void* data2);
 
 //Alinea 2
 

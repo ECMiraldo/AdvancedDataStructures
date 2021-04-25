@@ -175,10 +175,10 @@ ListElem FindItem(ListElem head, void* data1) {
 }
 
 int ContainsRec(ListElem head, void* data) {
-	if (head == NULL) return 1;
+	if (head == NULL) return 0;
 	else {
 		if (data != head->data) ContainsRec(head->next, data);
-		else return 0;
+		else return 1;
 	}
 }
 
@@ -188,6 +188,21 @@ ListElem GoToIndex(ListElem head, int index) {
 		else GoToIndex(head, index - 1);
 	}
 	else return NULL;
+}
+
+int getIndex(ListElem head, void* data) {
+	if (head != NULL) {
+		if (ContainsRec(head, data) == 1) {
+			int index = 0;
+			while (head->data != data) {
+				head = head->next;
+				index++;
+			}
+			return index;
+		}
+		else return -1;
+	}
+	else return -1;
 }
 
 void* ReturnData(ListElem head) {

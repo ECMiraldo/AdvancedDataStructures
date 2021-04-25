@@ -43,9 +43,13 @@ ListElem Filter(ListElem head, int (*rmv)(void* data));
 // Returns node of specified data, if said data exists in the list
 ListElem FindItem(ListElem head, void* data1);
 
-// Returns 0 if the list contains a node with said data, 1 if it doesnt
+// Returns 1 if the list contains a node with said data, 0 if it doesnt
 int ContainsRec(ListElem head, void* data);
 
+// Returns index of specified data if head contains data, else returns -1
+int getIndex(ListElem head, void* data);
+
+// Returns the node on specified index
 ListElem GoToIndex(ListElem head, int index);
 
 void* ReturnData(ListElem head);
