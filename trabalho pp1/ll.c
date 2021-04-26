@@ -5,6 +5,27 @@
 #include "Logica.h"
 #include "ll.h"
 
+ListElem List_Bin(void* data) {
+	ListElem aux = (ListElem)malloc(sizeof(ListElem));
+	aux->data = data;
+	aux->next;
+	return aux;
+}
+
+ListElem Cons(ListElem head, void* data) {
+	ListElem aux = List_Bin(data);
+	aux->next = head;
+	return aux;
+}
+
+ListElem Snoc(ListElem head, void* data) {
+	if (head == NULL) return Cons(data, head);
+	else {
+		head->next = Snoc(head->next, data);
+		return head;
+	}
+}
+
 ListElem addItemHead(ListElem head, void *data) {
 	ListElem aux;
 	
@@ -16,6 +37,20 @@ ListElem addItemHead(ListElem head, void *data) {
 	
 	return aux;
 }
+
+
+ListElem AddItemLast(ListElem head, void* data) {
+	ListElem aux, first;
+	aux = NULL;
+	aux->data = data;
+	first = head;
+	while (head->next != NULL) {
+		head = head->next;
+	}
+	head->next = addItemHead(head, data);
+	return first;
+}
+
 
 ListElem addItemLastRecursive(ListElem head, void *data) {
 	ListElem aux;
@@ -210,4 +245,13 @@ void* ReturnData(ListElem head) {
 	else {
 		return head->data;
 	}
+}
+
+int ListLen(ListElem head) {
+	int aux = 0;
+	while (head != NULL) {
+		head = head->next;
+		aux++;
+	}
+	return aux;
 }

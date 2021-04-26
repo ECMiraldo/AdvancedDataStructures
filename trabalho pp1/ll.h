@@ -19,6 +19,11 @@ void showListRecursive(ListElem head, void (*show)(void *data));
 // *data must point to storage in the heap
 ListElem addItemLastIterative(ListElem head, void *data);
 
+ListElem List_Bin(void* data);
+ListElem Cons(ListElem head, void* data);
+ListElem Snoc(ListElem head, void* data);
+
+
 // Insert a new element with *data in last position of the list, recursively
 // *data must point to storage in the heap
 ListElem addItemLastRecursive(ListElem head, void *data);
@@ -53,3 +58,7 @@ int getIndex(ListElem head, void* data);
 ListElem GoToIndex(ListElem head, int index);
 
 void* ReturnData(ListElem head);
+
+int ListLen(ListElem head);
+
+ListElem AddItemLast(ListElem head, void* data);

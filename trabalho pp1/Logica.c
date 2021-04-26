@@ -12,8 +12,7 @@ player* EmptyPlayer() {
     }
     return aux;
 }
-player* Constructor(int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3, char* pref4, int pont4, char* pref5, int pont5) {
-    player* aux = (player*)malloc(sizeof(player));
+player* Constructor(player* aux, int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3, char* pref4, int pont4, char* pref5, int pont5) {
     aux->playerid = numero;
     strcpy(aux->nickname, nomeJogador);
     strcpy(aux->preferences[0].gun, pref1);
