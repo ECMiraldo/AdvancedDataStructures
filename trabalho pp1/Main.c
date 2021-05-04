@@ -17,8 +17,10 @@ int main(void) {
 
 	ListElem main = NULL;
 	main = InsereArma(main, "espingarda", 1, "pedro", 79);
-	main = InsereArma(main, "espingarda", 2, "joao", 79);
+	main = InsereArma(main, "rifle", 2, "joao", 79);
 
+
+	printf("\n\n");
 	showListIterative(main, &ShowGuns);
 
 

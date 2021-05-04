@@ -71,7 +71,7 @@ s_Player* SubListCons(int n, char* nickname, int pont);
 //Main-list
 typedef struct S_Gun {
     char* tipoArma;
-    ListElem player;
+    ListElem subList;
 } s_Gun;
 
 s_Gun* GunCons(char* gun, int numero, char* nick, int pont);

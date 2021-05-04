@@ -42,14 +42,16 @@ void showPlayer(player* data) {
     printf("\n");
 }
 
-void ShowGuns(s_Gun* data) {
+void ShowSubList(s_Player* data) {
     if (data != NULL) {
+        printf("N: %d, Nick: %s, Pont: %d", data->numero, data->nomeJogador, data->pontuacao);
+    }
+}
+
+void ShowGuns(s_Gun* data) {
+    if (data != NULL) {  
         printf("%s", data->tipoArma);
-        while (data->player != NULL) {
-            s_Player* p = data->player->data;
-            printf("%d, %s, %d", p->numero, p->nomeJogador, p->pontuacao);
-            data->player = data->player->next;
-        }
+        showListIterative(data->subList, &ShowSubList);
     }
     printf("\n\n\n\n");
 }
@@ -68,34 +70,36 @@ s_Player* SubListCons(int n, char* nickname, int pont) {
 s_Gun* GunCons(char* gun, int numero, char* nick, int pont) {
     s_Gun* aux = (s_Gun*)malloc(sizeof(s_Gun));
     aux->tipoArma = gun;
-    aux->player = SubListCons(numero, nick, pont);
+    aux->subList = Snoc(NULL, SubListCons(numero, nick, pont));
     return aux;
 }
 //Rodar pela lista procurando uma arma com o mesmo nome gun,
 //Se tiver insere todos os dados na sub-lista dessa arma
 //Se nao encontrar, cria uma sub-lista nova com todos esses dados
-ListElem InsereArma(ListElem gunlist, char* gun, int numero, char* nick, int pont) {
-    if (gunlist == NULL)  gunlist = Cons(GunCons(gun, numero, nick, pont), NULL);
+ListElem InsereArma(ListElem mainList, char* gun, int numero, char* nick, int pont) {
+    if (mainList == NULL) return Cons(GunCons(gun, numero, nick, pont), NULL);
     else {
-        s_Gun* gunl = gunlist->data;
-        if (gunl->tipoArma == "N/A") return NULL;
+        s_Gun* gunl = mainList->data;
         if (strcmp(gunl->tipoArma, gun) == 0) {
-            gunl->player = Cons(SubListCons(numero, nick, pont), gunl->player);
-            return gunlist;
+            gunl->subList->next = Snoc(gunl->subList, SubListCons(numero, nick, pont));
+            return mainList;
         }
-        else gunlist->next = InsereArma(gunlist->next, gun, numero, nick, pont);
+        else {
+            mainList->next = InsereArma(mainList->next, gun, numero, nick, pont);
+            return mainList;
+        }
     }
 }
 
-ListElem InserirTudo(ListElem playerlist, ListElem gunlist) {
+ListElem InserirTudo(ListElem playerlist, ListElem mainList) {
     if (playerlist != NULL) {
         player* data = playerlist->data;
         for (int i = 0; i < 5; i++) {
-            gunlist = InsereArma(gunlist, data->preferences[i].gun, data->playerid, data->nickname, data->preferences[i].score);
+            mainList = InsereArma(mainList, data->preferences[i].gun, data->playerid, data->nickname, data->preferences[i].score);
         }
-        gunlist = InserirTudo(playerlist->next, gunlist);
+        mainList = InserirTudo(playerlist->next, mainList);
     }
-    else return gunlist;
+    else return mainList;
 }
 
 

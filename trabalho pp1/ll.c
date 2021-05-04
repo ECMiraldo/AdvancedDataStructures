@@ -16,8 +16,8 @@ ListElem Snoc(ListElem list, void* data) {
 	if (list == NULL) return Cons(data, NULL);
 	else {
 		list->next = Snoc(list->next, data);
-		return list;
 	}
+	return list;
 }
 
 ListElem addItemHead(ListElem head, void *data) {
