@@ -16,7 +16,8 @@ int main(void) {
 	showListIterative(lista, &showPlayer);
 
 	ListElem main = NULL;
-	main = InserirTudo(lista, main);
+	main = InsereArma(main, "espingarda", 1, "pedro", 79);
+	main = InsereArma(main, "espingarda", 2, "joao", 79);
 
 	showListIterative(main, &ShowGuns);
 

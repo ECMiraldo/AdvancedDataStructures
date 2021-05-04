@@ -4,4 +4,4 @@
 #include "ll.h"
 #include "Logica.h"
 
-ListElem ReadData(char* filename, ListElem list);
+ListElem ReadData(char* filename);
