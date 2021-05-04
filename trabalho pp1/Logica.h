@@ -35,14 +35,27 @@ player* EmptyPlayer();
 player* Constructor(int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3, char* pref4, int pont4, char* pref5, int pont5);
 //Used to print player's data as show function
 void showPlayer(player* data);
-//Returns a list of char* with all the guns;
-ListElem GetAllGuns(ListElem head);
 //Prints elements of a list of char*
 void PrintGuns(char* data);
 
 int igual(void* data1, void* data2);
 
 //Alinea 2
+
+/* 
+* Metralha -> [Jose(true), Maria, carlos]
+* Sniper -> [Joao(true), Joana, Maria, Carlos]
+* Espingarda -> [Joao, Joana(true)]
+* Pistola -> [Joao, Joana, Carlos(true)]
+* 
+* 
+* 
+* 4 armas 5 jogadores,
+*/
+
+
+
+
 
 //sub-list
 typedef struct S_Player {
@@ -53,9 +66,15 @@ typedef struct S_Player {
 } s_Player;
 
 
+s_Player* SubListCons(int n, char* nickname, int pont);
+
 //Main-list
 typedef struct S_Gun {
     char* tipoArma;
-    int quantidade;
     ListElem player;
 } s_Gun;
+
+s_Gun* GunCons(char* gun, int numero, char* nick, int pont);
+ListElem InsereArma(ListElem gunlist, char* gun, int numero, char* nick, int pont);
+void ShowGuns(s_Gun* data);
+ListElem InserirTudo(ListElem gunlist, ListElem MainList);

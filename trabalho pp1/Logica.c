@@ -2,6 +2,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Logica.h"
 
+//Alinea 1
+//Aloca memoria para uma struct player e inicializa os seus dados com valores padrao
 player* EmptyPlayer() {
     player* aux = (player*)malloc(sizeof(player));
     aux->playerid = 0;
@@ -40,100 +42,61 @@ void showPlayer(player* data) {
     printf("\n");
 }
 
-ListElem GetAllGuns(ListElem playerlist) {
-    if (playerlist != NULL) {
-        ListElem aux = NULL;
-        char gun[50];
-
-        while (playerlist != NULL) {
-            player* p = playerlist->data;
-            for (int i = 0; i < 5; i++) {
-                strcpy(gun, p->preferences[i].gun);
-                if (gun != '-' && ContainsRec(aux, gun) == 0) {
-                    aux = addItemLastRecursive(aux, gun);
-                }
-            }
-            playerlist = playerlist->next;
-        }
-        return aux;
+void ShowGuns(s_Gun* data) {
+    if (data != NULL) {
+        printf("%s", data->tipoArma);
+      /*  while (data->player != NULL) {
+            s_Player* p = data->player->data;
+            printf("%d, %s, %d", p->numero, p->nomeJogador, p->pontuacao);
+            data->player = data->player->next;
+        }*/
     }
-    else return NULL;
+    printf("\n\n\n\n");
 }
 
-void PrintGuns(char* data) {
-    if (data != NULL) printf("%s \n", data);
+//Alinea 2
+//Construtor para uma struct s_Player
+s_Player* SubListCons(int n, char* nickname, int pont) {
+    s_Player* aux = (s_Player*)malloc(sizeof(s_Player));
+    aux->numero = n;
+    aux->pontuacao = pont;
+    aux->nomeJogador = nickname;
+    aux->atribuda = false;
+    return aux;
+}
+//Construtor para um nodo da lista principal
+s_Gun* GunCons(char* gun, int numero, char* nick, int pont) {
+    s_Gun* aux = (s_Gun*)malloc(sizeof(s_Gun));
+    aux->tipoArma = gun;
+    aux->player = SubListCons(numero, nick, pont);
+    return aux;
+}
+//Rodar pela lista procurando uma arma com o mesmo nome gun,
+//Se tiver insere todos os dados na sub-lista dessa arma
+//Se nao encontrar, cria uma sub-lista nova com todos esses dados
+ListElem InsereArma(ListElem gunlist, char* gun, int numero, char* nick, int pont) {
+    if (gunlist == NULL)  gunlist = Cons(GunCons(gun, numero, nick, pont), NULL);
+    else {
+        s_Gun* gun = gunlist->data;
+        if (strcmp(gun->tipoArma, gun) == 1) {
+            gun->player = Snoc(gun->player, SubListCons(numero, nick, pont));
+            return gunlist;
+        }
+        else gunlist->next = InsereArma(gunlist->next, gun, numero, nick, pont);
+    }
+}
+
+ListElem InserirTudo(ListElem gunlist, ListElem MainList) {
+    if (gunlist != NULL) {
+        player* data = gunlist->data;
+        for (int i = 0; i < 5; i++) {
+            MainList = InsereArma(MainList, data->preferences[i].gun, data->playerid, data->nickname, data->preferences[i].score);
+        }
+        MainList = InserirTudo(gunlist->next, MainList);
+    }
+    else return MainList;
 }
 
 
-//ListElem GunSnoc(char* tipoArma, int qnt, ListElem player) {
-//    s_Gun* gun = NULL;
-//    gun->tipoArma = tipoArma;
-//    gun->quantidade = qnt;
-//    gun->player = player;
-//
-//    ListElem gunList = NULL;
-//    gunList = addItemLastRecursive(gunList, (s_Gun*)gun);
-//    return gunList;
-//}
-//
-//ListElem PlayerSnoc(int n, char nome, int pont, bool at) {
-//    s_Player* player = NULL;
-//    player->numero = n;
-//    player->nomeJogador = nome;
-//    player->pontuacao = pont;
-//    player->atribuda = false;
-//
-//    ListElem playerList = NULL;
-//    playerList = addItemLastRecursive(playerList, (s_Player*)player);
-//    return playerList;
-//}
-//
-//void showPlayer(void* data) {
-//    playerPref* j = (playerPref*)data;
-//    if (j != NULL)
-//        printf("%d %s ", j->numero, j->nomeJogador);
-//    for (int i = 0; i < 5; i++) {
-//        printf("%s %d ", j->preferencias[i], j->pontuacoes[i]);
-//        printf("\n");
-//    }
-//}
-//
-//int CompararPontuacao(char* gun, void* data1, void* data2) {
-//    playerPref* p1 = (playerPref*)data1;
-//    playerPref* p2 = (playerPref*)data2;
-//    
-//    int pontP1 = 0;
-//    int pontP2 = 0;
-//    for (int i = 0; i < 5; i++) {
-//        if (p1->preferencias[i] == gun) pontP1 = p1->pontuacoes[i];
-//        else if (p2->preferencias[i] == gun) pontP2 = p2->pontuacoes[i];
-//    }
-//    if (pontP1 > pontP2) return 1;
-//    else if (pontP1 < pontP2) return -1;
-//    else return 0;
-//}
-//
-//int PontMax(s_Gun* GunList) {
-//    if (GunList != NULL) {
-//        s_Player* playerList = (s_Player*)GunList->player->data;
-//        int max = playerList->pontuacao;
-//        while (GunList->player != NULL) {
-//            GunList->player = GunList->player->next;
-//            playerList = (s_Player*)GunList->player->data;
-//            if (playerList->pontuacao > max) max = playerList->pontuacao;
-//        }
-//        return max;
-//    }
-//    else return NULL;
-//}
-
-
-//ListElem MainlistCons(ListElem list) {
-//    playerPref* prefList = (playerPref*)list->data;
-//
-//    ListElem main = GunCons
-//    Main->data = ReturnData(Main);
-//
-//}
 
 

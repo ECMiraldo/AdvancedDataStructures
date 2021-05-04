@@ -2,32 +2,47 @@
 #include "File.h"
 #include "ll.h"
 #include "Logica.h"
+#include <ctype.h>
+
+
+//Le um player do ficheiro e retorna nulo caso nao consiga ler todos os campos de um player
+//consome o \n
+player* ReadPlayer(FILE* file) {
+    player* p = EmptyPlayer();
+    if (fscanf(file, "%d %s %s %d %s %d %s %d",
+                       &p->playerid,
+                       &p->nickname,
+                       &p->preferences[0].gun,
+                       &p->preferences[0].score,
+                       &p->preferences[1].gun,
+                       &p->preferences[1].score,
+                       &p->preferences[2].gun,
+                       &p->preferences[2].score) != 8) {
+        free(p);
+        return NULL;  
+    }
+    fgetc(file); //para consumir o \n
+    return p;
+}
+
 
 ListElem ReadData(char* filename) {
     FILE* fp = fopen(filename, "r");
-    player* p = EmptyPlayer();
-    ListElem list = List_Bin(p);
     if (fp == NULL) {
         printf("Error opening file");
-        free(p);
-        free(list);
+        return NULL;
     }
-
-
-    else {
-        
-        while (fscanf(fp, "%d %s %s %d %s %d %s %d",&p->playerid, &p->nickname, &p->preferences[0].gun, &p->preferences[0].score,  &p->preferences[1].gun, &p->preferences[1].score, &p->preferences[2].gun, &p->preferences[2].score) != EOF) {
-            if (ListLen(list) == 1) list = Cons(list, &p);
-            else {
-                list = Snoc(list, &p);
-            }
-            showListRecursive(list, &showPlayer);
-            
+    ListElem list = NULL;
+    while (!feof(fp)) {
+        player* p = ReadPlayer(fp);
+        if (p != NULL) {
+            list = Snoc(list, p);
         }
-        
-        fclose(fp);
+        else {
+            printf("Couldn't read player data. Player was NULL \n");
+            return NULL;
+        }
     }
-    
     return list;
 }
 

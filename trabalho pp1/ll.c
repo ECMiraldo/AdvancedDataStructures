@@ -5,24 +5,18 @@
 #include "Logica.h"
 #include "ll.h"
 
-ListElem List_Bin(void* data) {
+ListElem Cons(void* data, ListElem tail) {
 	ListElem aux = (ListElem)malloc(sizeof(ListElem));
 	aux->data = data;
-	aux->next;
+	aux->next = tail;
 	return aux;
 }
 
-ListElem Cons(ListElem head, void* data) {
-	ListElem aux = List_Bin(data);
-	aux->next = head;
-	return aux;
-}
-
-ListElem Snoc(ListElem head, void* data) {
-	if (head == NULL) return Cons(data, head);
+ListElem Snoc(ListElem list, void* data) {
+	if (list == NULL) return Cons(data, NULL);
 	else {
-		head->next = Snoc(head->next, data);
-		return head;
+		list->next = Snoc(list->next, data);
+		return list;
 	}
 }
 

@@ -19,8 +19,7 @@ void showListRecursive(ListElem head, void (*show)(void *data));
 // *data must point to storage in the heap
 ListElem addItemLastIterative(ListElem head, void *data);
 
-ListElem List_Bin(void* data);
-ListElem Cons(ListElem head, void* data);
+ListElem Cons(void* data, ListElem tail);
 ListElem Snoc(ListElem head, void* data);
 
 
