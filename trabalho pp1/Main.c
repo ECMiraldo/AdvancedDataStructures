@@ -16,12 +16,15 @@ int main(void) {
 	showListIterative(lista, &showPlayer);
 
 	ListElem main = NULL;
-	main = InsereArma(main, "espingarda", 1, "pedro", 79);
-	main = InsereArma(main, "rifle", 2, "joao", 79);
+	main = InsereArma(main, "espingarda", 1, "pedro",1, 79);
+	main = InsereArma(main, "espingarda", 2, "joao",1, 79);
 
 
 	printf("\n\n");
-	showListIterative(main, &ShowGuns);
+	/*showListIterative(main, &ShowGuns);*/
+
+	//main = Filter(main, &FilterGuns);
+	showListIterative(InserirTudo(lista,main), &ShowGuns);
 
 
 

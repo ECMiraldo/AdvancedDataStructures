@@ -61,3 +61,5 @@ void* ReturnData(ListElem head);
 int ListLen(ListElem head);
 
 ListElem AddItemLast(ListElem head, void* data);
+
+ListElem QuickSort(ListElem head, int(*cmp)(void* arg1, void* arg2));

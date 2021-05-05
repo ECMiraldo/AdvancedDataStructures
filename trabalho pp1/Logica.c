@@ -58,48 +58,61 @@ void ShowGuns(s_Gun* data) {
 
 //Alinea 2
 //Construtor para uma struct s_Player
-s_Player* SubListCons(int n, char* nickname, int pont) {
+s_Player* SubListCons(int n, char* nickname, int pref, int pont) {
     s_Player* aux = (s_Player*)malloc(sizeof(s_Player));
     aux->numero = n;
     aux->pontuacao = pont;
+    aux->pref = pref;
     aux->nomeJogador = nickname;
     aux->atribuda = false;
     return aux;
 }
 //Construtor para um nodo da lista principal
-s_Gun* GunCons(char* gun, int numero, char* nick, int pont) {
+s_Gun* GunCons(char* gun, int numero, char* nick, int pref, int pont) {
     s_Gun* aux = (s_Gun*)malloc(sizeof(s_Gun));
     aux->tipoArma = gun;
-    aux->subList = Snoc(NULL, SubListCons(numero, nick, pont));
+    aux->subList = Snoc(NULL, SubListCons(numero, nick, pref, pont));
     return aux;
 }
 //Rodar pela lista procurando uma arma com o mesmo nome gun,
 //Se tiver insere todos os dados na sub-lista dessa arma
 //Se nao encontrar, cria uma sub-lista nova com todos esses dados
-ListElem InsereArma(ListElem mainList, char* gun, int numero, char* nick, int pont) {
-    if (mainList == NULL) return Cons(GunCons(gun, numero, nick, pont), NULL);
+ListElem InsereArma(ListElem mainList, char* gun, int numero, char* nick, int pref, int pont) {
+    if (mainList == NULL) return Cons(GunCons(gun, numero, nick, pref, pont), NULL);
     else {
         s_Gun* gunl = mainList->data;
+        /*if (strcmp(gun, "-") == 0 || strcmp(gun,"N/A") == 0) return NULL;*/
         if (strcmp(gunl->tipoArma, gun) == 0) {
-            gunl->subList->next = Snoc(gunl->subList, SubListCons(numero, nick, pont));
+            gunl->subList = Snoc(gunl->subList, SubListCons(numero, nick, pref, pont));
             return mainList;
         }
         else {
-            mainList->next = InsereArma(mainList->next, gun, numero, nick, pont);
+            mainList->next = InsereArma(mainList->next, gun, numero, nick, pref, pont);
             return mainList;
         }
     }
 }
 
+int FilterGuns(void* value) {
+    s_Gun* data = value;
+    if (data->tipoArma == "-" || data->tipoArma == "N/A") return 1;
+    else return 0;
+}
+
+
 ListElem InserirTudo(ListElem playerlist, ListElem mainList) {
     if (playerlist != NULL) {
         player* data = playerlist->data;
         for (int i = 0; i < 5; i++) {
-            mainList = InsereArma(mainList, data->preferences[i].gun, data->playerid, data->nickname, data->preferences[i].score);
+           mainList = InsereArma(mainList, data->preferences[i].gun, data->playerid, data->nickname, i, data->preferences[i].score);
         }
         mainList = InserirTudo(playerlist->next, mainList);
+        
     }
-    else return mainList;
+    else {
+        
+        return mainList;
+    }
 }
 
 

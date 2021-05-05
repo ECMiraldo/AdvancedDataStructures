@@ -249,3 +249,22 @@ int ListLen(ListElem head) {
 	}
 	return aux;
 }
+
+ListElem QuickSort(ListElem head, int(*cmp)(void* arg1, void* arg2)) {
+	if (head != NULL) {
+		ListElem start = head;
+		while (head->next != NULL) {
+			if (cmp(head->data, head->next->data) > 0) {
+				void* aux = head->data;
+				head->data = head->next->data;
+				head->next->data = aux;
+				head = head->next;
+			}
+		}
+		return start;
+	}
+	else {
+		printf("Quicksort error: ListElem is NULL ptr");
+		return NULL;
+	}
+}
