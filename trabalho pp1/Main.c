@@ -9,22 +9,41 @@
 #include "Examples.h"
 #include "File.h"
 
+void ShowInt(void* a) {
+	printf("%d, ", (int)a);
+}
+
+int CmpInt(void* va, void* vb) {
+	int a = (int) va;
+	int b = (int) vb;
+	if (a < b) return -1;
+	if (a == b) return 0;
+	else return 1;
+}
+
 int main(void) {
 	ListElem lista = NULL;
 
-	lista = ReadData("PP1.txt", lista);
+	lista = ReadData("PP1.txt");
 	showListIterative(lista, &showPlayer);
 
 	ListElem main = NULL;
-	main = InsereArma(main, "espingarda", 1, "pedro",1, 79);
-	main = InsereArma(main, "espingarda", 2, "joao",1, 79);
-
 
 	printf("\n\n");
 	/*showListIterative(main, &ShowGuns);*/
 
+	main = InserirTudo(lista, main);
 	//main = Filter(main, &FilterGuns);
-	showListIterative(InserirTudo(lista,main), &ShowGuns);
+	main = SortMainList(main);
+	showListIterative(main, &ShowGuns);
+
+
+
+	//ListElem l1 = Cons(10, Cons(5, Cons(25, Cons(42, Cons(4, NULL)))));
+
+
+
+	//showListIterative(MergeSort(l1, &CmpInt), &ShowInt);
 
 
 

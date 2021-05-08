@@ -62,4 +62,8 @@ int ListLen(ListElem head);
 
 ListElem AddItemLast(ListElem head, void* data);
 
-ListElem QuickSort(ListElem head, int(*cmp)(void* arg1, void* arg2));
+ListElem MergeSort(ListElem head, int(*cmp)(void* arg1, void* arg2));
+
+void FreeList(ListElem head);
+
+ListElem Merge(ListElem l1, ListElem l2, int(*cmp)(void* arg1, void* arg2));

@@ -72,3 +72,5 @@ ListElem InsereArma(ListElem gunlist, char* gun, int numero, char* nick, int pre
 void ShowGuns(s_Gun* data);
 ListElem InserirTudo(ListElem gunlist, ListElem MainList);
 int FilterGuns(void* value);
+int SortSubList(void* data1, void* data2);
+ListElem SortMainList(ListElem gunList);

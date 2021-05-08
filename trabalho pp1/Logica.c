@@ -42,20 +42,6 @@ void showPlayer(player* data) {
     printf("\n");
 }
 
-void ShowSubList(s_Player* data) {
-    if (data != NULL) {
-        printf("N: %d, Nick: %s, Pont: %d", data->numero, data->nomeJogador, data->pontuacao);
-    }
-}
-
-void ShowGuns(s_Gun* data) {
-    if (data != NULL) {  
-        printf("%s", data->tipoArma);
-        showListIterative(data->subList, &ShowSubList);
-    }
-    printf("\n\n\n\n");
-}
-
 //Alinea 2
 //Construtor para uma struct s_Player
 s_Player* SubListCons(int n, char* nickname, int pref, int pont) {
@@ -93,27 +79,77 @@ ListElem InsereArma(ListElem mainList, char* gun, int numero, char* nick, int pr
     }
 }
 
-int FilterGuns(void* value) {
-    s_Gun* data = value;
-    if (data->tipoArma == "-" || data->tipoArma == "N/A") return 1;
-    else return 0;
-}
-
-
 ListElem InserirTudo(ListElem playerlist, ListElem mainList) {
     if (playerlist != NULL) {
         player* data = playerlist->data;
         for (int i = 0; i < 5; i++) {
-           mainList = InsereArma(mainList, data->preferences[i].gun, data->playerid, data->nickname, i, data->preferences[i].score);
+           mainList = InsereArma(mainList,
+                        data->preferences[i].gun,
+                        data->playerid,
+                        data->nickname,
+                        i,
+                        data->preferences[i].score);
         }
-        mainList = InserirTudo(playerlist->next, mainList);
-        
+        InserirTudo(playerlist->next, mainList);
     }
-    else {
-        
-        return mainList;
+    else return Filter(mainList, &FilterGuns);  
+}
+
+void ShowSubList(s_Player* data) {
+    if (data != NULL) {
+        printf("Jogador numero: %d \t Nick: %s \t Pref: %d \t Pont: %d \t\t",
+            data->numero,
+            data->nomeJogador,
+            data->pref,
+            data->pontuacao);
+        if (data->atribuda == true) printf("true\n");
+        else printf("false \n");
     }
 }
+
+void ShowGuns(s_Gun* data) {
+    if (data != NULL) {
+        printf("Arma: %s", data->tipoArma);
+        printf("\n");
+        showListIterative(data->subList, &ShowSubList);
+    }
+    printf("\n\n");
+}
+
+int FilterGuns(void* value) {
+    s_Gun* data = (s_Gun*)value;
+    char* a = "-";
+    char* b = "N/A";
+    if (strcmp(data->tipoArma, a) == 0 || strcmp(data->tipoArma, b) == 0) {
+        FreeList(data->subList);
+        return 1;
+    }
+    else return 0;
+}
+
+ListElem SortMainList(ListElem gunList) {
+    if (gunList == NULL) return NULL;
+    s_Gun* mainNode = (s_Gun*)gunList->data;
+    mainNode->subList = MergeSort(mainNode->subList, &SortSubList);
+    gunList->next = SortMainList(gunList->next);
+    return gunList;
+}
+
+
+int SortSubList(void* player1, void* player2) {
+    s_Player* p1 = (s_Player*)player1;
+    s_Player* p2 = (s_Player*)player2;
+
+    if (p1->pref > p2->pref) return 1;
+    if (p1->pref < p2->pref) return -1;
+    else {
+        if (p1->pontuacao > p2->pontuacao) return 1;
+        if (p1->pontuacao < p2->pontuacao) return -1;
+        else return 0;
+    }
+}
+
+
 
 
 

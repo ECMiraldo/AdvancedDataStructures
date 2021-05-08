@@ -6,7 +6,7 @@
 #include "ll.h"
 
 ListElem Cons(void* data, ListElem tail) {
-	ListElem aux = (ListElem)malloc(sizeof(ListElem));
+	ListElem aux = (ListElem)malloc(sizeof(SListElem));
 	aux->data = data;
 	aux->next = tail;
 	return aux;
@@ -14,9 +14,7 @@ ListElem Cons(void* data, ListElem tail) {
 
 ListElem Snoc(ListElem list, void* data) {
 	if (list == NULL) return Cons(data, NULL);
-	else {
-		list->next = Snoc(list->next, data);
-	}
+	else list->next = Snoc(list->next, data);
 	return list;
 }
 
@@ -127,9 +125,8 @@ ListElem removeItemIterative(ListElem head, void *data, int (*compare)(void *dat
 ListElem removeItemRecursive(ListElem head, void *data, int (*compare)(void *data1, void *data2)) {
 	ListElem aux;
 	
-	if(head == NULL)
-		return NULL;
-	
+	if(head == NULL) return NULL;
+		
 	if(compare(head->data, data) == 1) {
 		aux = head->next;
 		free(head);
@@ -179,19 +176,17 @@ ListElem addItemOrderedRecursive(ListElem head, void *data, int (*compare)(void 
 }
 
 ListElem Filter(ListElem head, int (*rmv)(void* data)) {
-	ListElem aux;
+	ListElem aux = head;
 
-	if (head == NULL)
-		return NULL;
-
-	if (rmv(head->data) == 1) {
+	if (head == NULL) return NULL;	
+	else if (rmv(head->data) == 1) {
 		aux = head->next;
 		free(head);
 		return Filter(aux, rmv);
 	}
 	else {
 		head->next = Filter(head->next, rmv);
-		return head;
+		return aux;
 	}
 }
 
@@ -250,21 +245,49 @@ int ListLen(ListElem head) {
 	return aux;
 }
 
-ListElem QuickSort(ListElem head, int(*cmp)(void* arg1, void* arg2)) {
-	if (head != NULL) {
-		ListElem start = head;
-		while (head->next != NULL) {
-			if (cmp(head->data, head->next->data) > 0) {
-				void* aux = head->data;
-				head->data = head->next->data;
-				head->next->data = aux;
-				head = head->next;
-			}
-		}
-		return start;
+ListElem Merge(ListElem l1, ListElem l2, int(*cmp)(void* arg1, void* arg2)) {
+	if (l1 == NULL) return l2;
+	if (l2 == NULL) return l1;
+
+	//Se l1.data menor igual a l2.data retorna -1 ou 0
+	if (cmp(l1->data, l2->data) > 0) {
+		l2->next = Merge(l1, l2->next, cmp);
+		return l2;
 	}
 	else {
-		printf("Quicksort error: ListElem is NULL ptr");
-		return NULL;
+		l1->next = Merge(l1->next, l2, cmp);
+		return l1;
+	}
+}
+
+void Split(ListElem l1, ListElem* l2) {
+	if (l1 == NULL) return;
+	if (l1->next == NULL) return;
+
+	ListElem aux = l1->next;
+	l1->next = l1->next->next;
+	aux->next = *l2;
+	*l2 = aux;
+
+	Split(l1->next, l2);
+}
+
+ListElem MergeSort(ListElem head, int(*cmp)(void* arg1, void* arg2)) {
+	if (head == NULL) return NULL;
+	if (head->next == NULL) return head;
+
+	ListElem aux = NULL;
+	Split(head, &aux);
+	head = MergeSort(head, cmp);
+	aux  = MergeSort(aux, cmp);
+	return Merge(head, aux, cmp);
+}
+
+void FreeList(ListElem head) {
+	if (head == NULL) return;
+	else {
+		ListElem aux = head->next;
+		free(head);
+		FreeList(aux);
 	}
 }
