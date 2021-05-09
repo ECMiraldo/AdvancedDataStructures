@@ -79,41 +79,6 @@ ListElem InsereArma(ListElem mainList, char* gun, int numero, char* nick, int pr
     }
 }
 
-ListElem InserirTudo(ListElem playerlist, ListElem mainList) {
-    if (playerlist != NULL) {
-        player* data = playerlist->data;
-        for (int i = 0; i < 5; i++) {
-           mainList = InsereArma(mainList,
-                        data->preferences[i].gun,
-                        data->playerid,
-                        data->nickname,
-                        i,
-                        data->preferences[i].score);
-        }
-        InserirTudo(playerlist->next, mainList);
-    }
-    else return Filter(mainList, &FilterGuns);  
-}
-
-void ShowSubList(s_Player* data) {
-    if (data != NULL) {
-        printf("Jogador numero: %d \t Nick: %s \t Pont: %d \t %s \n",
-            data->numero,
-            data->nomeJogador,
-            data->pontuacao,
-            data->atribuda);
-    }
-}
-
-void ShowGuns(s_Gun* data) {
-    if (data != NULL) {
-        printf("Arma: %s", data->tipoArma);
-        printf("\n");
-        showListIterative(data->subList, &ShowSubList);
-    }
-    printf("\n\n");
-}
-
 int FilterGuns(void* value) {
     s_Gun* data = (s_Gun*)value;
     char* a = "-";
@@ -125,12 +90,20 @@ int FilterGuns(void* value) {
     else return 0;
 }
 
-ListElem SortMainList(ListElem gunList) {
-    if (gunList == NULL) return NULL;
-    s_Gun* mainNode = (s_Gun*)gunList->data;
-    mainNode->subList = MergeSort(mainNode->subList, &SortSubList);
-    gunList->next = SortMainList(gunList->next);
-    return gunList;
+ListElem InserirTudo(ListElem playerlist, ListElem mainList) {
+    if (playerlist != NULL) {
+        player* data = playerlist->data;
+        for (int i = 0; i < 5; i++) {
+            mainList = InsereArma(mainList,
+                data->preferences[i].gun,
+                data->playerid,
+                data->nickname,
+                i,
+                data->preferences[i].score);
+        }
+        InserirTudo(playerlist->next, mainList);
+    }
+    else return Filter(mainList, &FilterGuns);
 }
 
 int SortSubList(void* player1, void* player2) {
@@ -144,6 +117,14 @@ int SortSubList(void* player1, void* player2) {
         if (p1->pontuacao < p2->pontuacao) return 1;
         else return 0;
     }
+}
+
+ListElem SortMainList(ListElem gunList) {
+    if (gunList == NULL) return NULL;
+    s_Gun* mainNode = (s_Gun*)gunList->data;
+    mainNode->subList = MergeSort(mainNode->subList, &SortSubList);
+    gunList->next = SortMainList(gunList->next);
+    return gunList;
 }
 
 void Atribuir(ListElem mainList) {
@@ -219,7 +200,24 @@ void Atribuir(ListElem mainList) {
 
 }
 
+void ShowSubList(s_Player* data) {
+    if (data != NULL) {
+        printf("Jogador numero: %d \t Nick: %s \t Pont: %d \t %s \n",
+            data->numero,
+            data->nomeJogador,
+            data->pontuacao,
+            data->atribuda);
+    }
+}
 
+void ShowGuns(s_Gun* data) {
+    if (data != NULL) {
+        printf("Arma: %s", data->tipoArma);
+        printf("\n");
+        showListIterative(data->subList, &ShowSubList);
+    }
+    printf("\n\n");
+}
 
        
 

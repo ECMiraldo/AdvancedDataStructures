@@ -37,6 +37,7 @@ int main(void) {
 	main = SortMainList(main);
 	
 	Atribuir(main);
+	showListIterative(main, &ShowGuns);
 	SortMain2Table(main);
 	showListIterative(main, &ShowGuns);
 
