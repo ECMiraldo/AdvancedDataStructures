@@ -102,7 +102,7 @@ void ShowSubList(s_Player* data) {
             data->nomeJogador,
             data->pref,
             data->pontuacao);
-        if (data->atribuda == true) printf("true\n");
+        if (data->atribuda == true) printf("atribuida\n");
         else printf("false \n");
     }
 }
@@ -189,7 +189,7 @@ void Atribuir(ListElem mainList) {
 
         nArmas++;
         mainList = mainList->next;
-    }
+    } //end first while
 
     //verifica se existe alguma arma sem atribuicao
     if (ListLen(nomes) < nArmas) { 
@@ -197,24 +197,65 @@ void Atribuir(ListElem mainList) {
         {
             s_Gun* gundata = (s_Gun*)head->data;
             ListElem subList = gundata->subList;
-
+           
             //Encontra qual arma que nao está atribuida
             if (ContainsRec(guns, gundata->tipoArma) == 0) {
                 //Dentro da sublista verifica se existe algum jogador sem arma e atribui a ele
                 while (subList != NULL) {
                     s_Player* playerData = (s_Player*)subList->data;
+                    ListElem aux = subList->next;
+                    
                     if (ContainsRec(nomes, playerData->nomeJogador) == 0) {
                         playerData->atribuda = true;
                       
                         nomes = Cons(playerData->nomeJogador, nomes);
                         guns  = Cons(gundata->tipoArma, guns);
                     }
+
+                    //checamos se ha empate
+                    if (aux != NULL) { //Se subList nao esta no ultimo nodo
+                        s_Player* auxData = (s_Player*)aux->data;
+                        if (playerData->pref == auxData->pref
+                            && playerData->pontuacao == auxData->pontuacao) {
+                            if (ContainsRec(nomes, auxData->nomeJogador) == 0) {
+                                auxData->atribuda = true;
+                                nomes = Cons(playerData->nomeJogador, nomes);
+                                guns = Cons(gundata->tipoArma, guns);
+                            }
+                        }
+                    }
                     subList = subList->next;
-                }
-            }
+                } //end sub-list traverse
+            } 
             head = head->next;
-        }
+        } //end second while
     }
     FreeList(nomes);
     FreeList(guns);
+}
+
+//Alinea 3
+
+ListElem Sort2Table(void* player1, void* player2) {
+    s_Player* p1 = (s_Player*)player1;
+    s_Player* p2 = (s_Player*)player2;
+
+    if (p1->atribuda == true && p2->atribuda == false) return -1;
+    if (p1->atribuda == false && p2->atribuda == true) return 1;
+    if (p1->atribuda == true && p2->atribuda == true) {
+        if (p1->pontuacao > p2->pontuacao) return -1;
+        if (p1->pontuacao < p2->pontuacao) return 1;
+    }
+    if (p1->atribuda == false && p2->atribuda == false) {
+        if (p1->numero > p2->numero) return 1;
+        if (p1->numero < p2->numero) return -1;
+    }
+}
+
+ListElem SortMain2Table(ListElem mainList) {
+    if (mainList == NULL) return NULL;
+    s_Gun* gunList = (s_Gun*)mainList->data;
+    gunList->subList = MergeSort(gunList->subList, &Sort2Table);
+    mainList->next = SortMain2Table(mainList->next);
+    return mainList;
 }

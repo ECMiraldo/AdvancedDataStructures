@@ -74,3 +74,6 @@ ListElem InserirTudo(ListElem gunlist, ListElem MainList);
 int FilterGuns(void* value);
 int SortSubList(void* data1, void* data2);
 ListElem SortMainList(ListElem gunList);
+ListElem Sort2Table(void* player1, void* player2);
+ListElem SortMain2Table(ListElem mainList);
+void Atribuir(ListElem mainList);

@@ -36,6 +36,7 @@ int main(void) {
 	//main = Filter(main, &FilterGuns);
 	main = SortMainList(main);
 	Atribuir(main);
+	SortMain2Table(main);
 	showListIterative(main, &ShowGuns);
 
 
