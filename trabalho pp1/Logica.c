@@ -50,7 +50,7 @@ s_Player* SubListCons(int n, char* nickname, int pref, int pont) {
     aux->pontuacao = pont;
     aux->pref = pref;
     aux->nomeJogador = nickname;
-    aux->atribuda = false;
+    aux->atribuda = "Sem Arma";
     return aux;
 }
 //Construtor para um nodo da lista principal
@@ -97,13 +97,11 @@ ListElem InserirTudo(ListElem playerlist, ListElem mainList) {
 
 void ShowSubList(s_Player* data) {
     if (data != NULL) {
-        printf("Jogador numero: %d \t Nick: %s \t Pref: %d \t Pont: %d \t\t",
+        printf("Jogador numero: %d \t Nick: %s \t Pont: %d \t %s \n",
             data->numero,
             data->nomeJogador,
-            data->pref,
-            data->pontuacao);
-        if (data->atribuda == true) printf("atribuida\n");
-        else printf("false \n");
+            data->pontuacao,
+            data->atribuda);
     }
 }
 
@@ -166,13 +164,14 @@ void Atribuir(ListElem mainList) {
             if (ContainsRec(nomes, playerData->nomeJogador) == 0 
              && ContainsRec(guns, gundata->tipoArma) == 0) {
 
-
-                playerData->atribuda = true;
+                playerData->atribuda = gundata->tipoArma;
                 nomes = Cons(playerData->nomeJogador, nomes);
                 guns  = Cons(gundata->tipoArma, guns);
             }
             if (ContainsRec(nomes, auxData->nomeJogador) == 0) {
-                auxData->atribuda = true;
+                strcat(gundata->tipoArma, " Empate");
+
+                auxData->atribuda = gundata->tipoArma ;
                 nomes = Cons(playerData->nomeJogador, nomes);
                 guns  = Cons(gundata->tipoArma, guns);
                 nArmas++;;
@@ -182,7 +181,7 @@ void Atribuir(ListElem mainList) {
         //Checamos se esse jogador que ja tem arm atribuida
         if (ContainsRec(nomes, playerData->nomeJogador) == 0
             && ContainsRec(guns, gundata->tipoArma) == 0) {
-            playerData->atribuda = true;
+            playerData->atribuda = gundata->tipoArma;
             nomes = Cons(playerData->nomeJogador, nomes);
             guns  = Cons(gundata->tipoArma, guns);
         }
@@ -206,7 +205,7 @@ void Atribuir(ListElem mainList) {
                     ListElem aux = subList->next;
                     
                     if (ContainsRec(nomes, playerData->nomeJogador) == 0) {
-                        playerData->atribuda = true;
+                        playerData->atribuda = gundata->tipoArma;
                       
                         nomes = Cons(playerData->nomeJogador, nomes);
                         guns  = Cons(gundata->tipoArma, guns);
@@ -218,7 +217,10 @@ void Atribuir(ListElem mainList) {
                         if (playerData->pref == auxData->pref
                             && playerData->pontuacao == auxData->pontuacao) {
                             if (ContainsRec(nomes, auxData->nomeJogador) == 0) {
-                                auxData->atribuda = true;
+
+                                strcat(gundata->tipoArma, " Empate");
+                                playerData->atribuda = gundata->tipoArma;
+                                auxData->atribuda = gundata->tipoArma;
                                 nomes = Cons(playerData->nomeJogador, nomes);
                                 guns = Cons(gundata->tipoArma, guns);
                             }
@@ -236,17 +238,17 @@ void Atribuir(ListElem mainList) {
 
 //Alinea 3
 
-ListElem Sort2Table(void* player1, void* player2) {
+int Sort2Table(void* player1, void* player2) {
     s_Player* p1 = (s_Player*)player1;
     s_Player* p2 = (s_Player*)player2;
 
-    if (p1->atribuda == true && p2->atribuda == false) return -1;
-    if (p1->atribuda == false && p2->atribuda == true) return 1;
-    if (p1->atribuda == true && p2->atribuda == true) {
+    if (strcmp(p1->atribuda, "Sem Arma") != 0 && strcmp(p2->atribuda, "Sem Arma") == 0) return -1;
+    if (strcmp(p1->atribuda, "Sem Arma") == 0 && strcmp(p2->atribuda, "Sem Arma") != 0) return 1;
+    if (strcmp(p1->atribuda, "Sem Arma") != 0 && strcmp(p2->atribuda, "Sem Arma") != 0) {
         if (p1->pontuacao > p2->pontuacao) return -1;
         if (p1->pontuacao < p2->pontuacao) return 1;
     }
-    if (p1->atribuda == false && p2->atribuda == false) {
+    if (strcmp(p1->atribuda, "Sem Arma") == 0 && strcmp(p2->atribuda, "Sem Arma") == 0) {
         if (p1->numero > p2->numero) return 1;
         if (p1->numero < p2->numero) return -1;
     }
@@ -258,4 +260,49 @@ ListElem SortMain2Table(ListElem mainList) {
     gunList->subList = MergeSort(gunList->subList, &Sort2Table);
     mainList->next = SortMain2Table(mainList->next);
     return mainList;
+}
+
+void RemoveSemArma(ListElem mainList) {
+    ListElem aux = NULL;
+    ListElem head = mainList;
+    while(mainList != NULL) {
+        s_Gun* MainListData = (s_Gun*)mainList->data;
+        ListElem sublist = MainListData->subList;
+        while (sublist != NULL) {
+            s_Player* subListData = (s_Player*)sublist->data;
+            //Se o jogador ja possui uma arma atribuida, entao
+            //Guardamos o numero desse jogador numa lista
+            if (strcmp(subListData->atribuda, "Sem Arma") != 0) {
+                aux = Cons(subListData->numero, aux);
+            }
+            sublist = sublist->next;
+        }
+        mainList = mainList->next;
+    }
+    //Agora iremos passar pelas listas outra vez e, atribuir a string " "
+    //Para todos jogador contidos na lista aux
+    while (head != NULL) {
+        s_Gun* MainListData = (s_Gun*)head->data;
+        ListElem sublist = MainListData->subList;
+        while (sublist != NULL) {
+            s_Player* subListData = (s_Player*)sublist->data;
+            if (ContainsRec(aux, subListData->numero) == 1) {
+                if (strcmp(MainListData->tipoArma, subListData->atribuda) != 0) subListData->atribuda = " ";
+            }
+            sublist = sublist->next;
+        }
+        head = head->next;
+    }
+    FreeList(aux);
+}
+void ExportTable(ListElem mainlist) {
+    if (mainlist == NULL) return NULL;
+    else {
+        s_Gun* MainListData = (s_Gun*)mainlist->data;
+        ListElem sublist = MainListData->subList;
+        s_Player* SubListData = (s_Player*)sublist->data;
+
+
+
+    }
 }

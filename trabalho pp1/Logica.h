@@ -55,7 +55,7 @@ typedef struct S_Player {
     char* nomeJogador;
     int pref;  //0 a 4
     int pontuacao;
-    bool atribuda;
+    char* atribuda;
 } s_Player;
 
 
@@ -74,6 +74,7 @@ ListElem InserirTudo(ListElem gunlist, ListElem MainList);
 int FilterGuns(void* value);
 int SortSubList(void* data1, void* data2);
 ListElem SortMainList(ListElem gunList);
-ListElem Sort2Table(void* player1, void* player2);
+int Sort2Table(void* player1, void* player2);
 ListElem SortMain2Table(ListElem mainList);
 void Atribuir(ListElem mainList);
+void RemoveSemArma(ListElem mainList);
