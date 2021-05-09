@@ -135,7 +135,6 @@ ListElem SortMainList(ListElem gunList) {
     return gunList;
 }
 
-
 int SortSubList(void* player1, void* player2) {
     s_Player* p1 = (s_Player*)player1;
     s_Player* p2 = (s_Player*)player2;
@@ -143,14 +142,79 @@ int SortSubList(void* player1, void* player2) {
     if (p1->pref > p2->pref) return 1;
     if (p1->pref < p2->pref) return -1;
     else {
-        if (p1->pontuacao > p2->pontuacao) return 1;
-        if (p1->pontuacao < p2->pontuacao) return -1;
+        if (p1->pontuacao > p2->pontuacao) return -1;
+        if (p1->pontuacao < p2->pontuacao) return 1;
         else return 0;
     }
 }
 
+void Atribuir(ListElem mainList) {
+    
+    ListElem nomes = NULL;
+    ListElem guns = NULL;
+    int nArmas = 0;
+    ListElem head = mainList;
+    while (mainList != NULL) {
+        s_Gun* gundata = (s_Gun*)mainList->data;
+        ListElem subList = gundata->subList;
+        s_Player* playerData = (s_Player*)subList->data;
+        
+        //checamos se ha empate
+        ListElem aux = subList->next;
+        s_Player* auxData = (s_Player*)aux->data;
+        if (playerData->pref == auxData->pref && playerData->pontuacao == auxData->pontuacao) {
+            if (ContainsRec(nomes, playerData->nomeJogador) == 0 
+             && ContainsRec(guns, gundata->tipoArma) == 0) {
 
 
+                playerData->atribuda = true;
+                nomes = Cons(playerData->nomeJogador, nomes);
+                guns  = Cons(gundata->tipoArma, guns);
+            }
+            if (ContainsRec(nomes, auxData->nomeJogador) == 0
+             && ContainsRec(guns, gundata->tipoArma) == 0) {
+                auxData->atribuda = true;
+                nomes = Cons(playerData->nomeJogador, nomes);
+                guns  = Cons(gundata->tipoArma, guns);
+            }
+        }
 
+        //Checamos se esse jogador que ja tem arm atribuida
+        if (ContainsRec(nomes, playerData->nomeJogador) == 0
+            && ContainsRec(guns, gundata->tipoArma) == 0) {
+            playerData->atribuda = true;
+            nomes = Cons(playerData->nomeJogador, nomes);
+            guns  = Cons(gundata->tipoArma, guns);
+        }
 
+        nArmas++;
+        mainList = mainList->next;
+    }
 
+    //verifica se existe alguma arma sem atribuicao
+    if (ListLen(nomes) < nArmas) { 
+        while (head != NULL)
+        {
+            s_Gun* gundata = (s_Gun*)head->data;
+            ListElem subList = gundata->subList;
+
+            //Encontra qual arma que nao está atribuida
+            if (ContainsRec(guns, gundata->tipoArma) == 0) {
+                //Dentro da sublista verifica se existe algum jogador sem arma e atribui a ele
+                while (subList != NULL) {
+                    s_Player* playerData = (s_Player*)subList->data;
+                    if (ContainsRec(nomes, playerData->nomeJogador) == 0) {
+                        playerData->atribuda = true;
+                      
+                        nomes = Cons(playerData->nomeJogador, nomes);
+                        guns  = Cons(gundata->tipoArma, guns);
+                    }
+                    subList = subList->next;
+                }
+            }
+            head = head->next;
+        }
+    }
+    FreeList(nomes);
+    FreeList(guns);
+}
