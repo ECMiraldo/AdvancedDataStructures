@@ -147,108 +147,98 @@ int SortSubList(void* player1, void* player2) {
 }
 
 void Atribuir(ListElem mainList) {
-    
+    if (mainList == NULL) return;
     ListElem nomes = NULL;
-    ListElem guns = NULL;
-    int nArmas = 0;
+    ListElem armasatribuidas = NULL;
+    char* guns[5];
+    for (int i = 0; i < 5; i++) {
+        guns[i] = "Sem Arma";
+    }
     ListElem head = mainList;
-    while (mainList != NULL) {
-        s_Gun* gundata = (s_Gun*)mainList->data;
-        ListElem subList = gundata->subList;
-        s_Player* playerData = (s_Player*)subList->data;
-        
-        //checamos se ha empate
-        ListElem aux = subList->next;
-        s_Player* auxData = (s_Player*)aux->data;
-        if (playerData->pref == auxData->pref && playerData->pontuacao == auxData->pontuacao) {
-            if (ContainsRec(nomes, playerData->nomeJogador) == 0 
-             && ContainsRec(guns, gundata->tipoArma) == 0) {
-
-                playerData->atribuda = gundata->tipoArma;
-                nomes = Cons(playerData->nomeJogador, nomes);
-                guns  = Cons(gundata->tipoArma, guns);
-            }
-            if (ContainsRec(nomes, auxData->nomeJogador) == 0) {
-                strcat(gundata->tipoArma, " Empate");
-
-                auxData->atribuda = gundata->tipoArma ;
-                nomes = Cons(playerData->nomeJogador, nomes);
-                guns  = Cons(gundata->tipoArma, guns);
-                nArmas++;;
-            }
+    while (head != NULL) {
+        s_Gun* gunList = (s_Gun*)head->data;
+        ListElem sublist = gunList->subList;
+        s_Player* aux = (s_Player*)gunList->subList->data; //primeiro nodo da sub-lista
+        //Se o primeiro nodo esta sem arma, uma vez que a lista ja se encontra ordenada, entao atribuimos
+        if (strcmp(guns[aux->numero - 1], "Sem Arma") == 0) {
+            guns[aux->numero - 1] = gunList->tipoArma;
+            armasatribuidas = Cons(gunList->tipoArma, armasatribuidas);
         }
-
-        //Checamos se esse jogador que ja tem arm atribuida
-        if (ContainsRec(nomes, playerData->nomeJogador) == 0
-            && ContainsRec(guns, gundata->tipoArma) == 0) {
-            playerData->atribuda = gundata->tipoArma;
-            nomes = Cons(playerData->nomeJogador, nomes);
-            guns  = Cons(gundata->tipoArma, guns);
+        sublist = sublist->next;
+        //Depois verificamos se existe empate
+        while (sublist != NULL) {
+            s_Player* playerData = (s_Player*)sublist->data;
+            if (aux->pref == playerData->pref && aux->pontuacao == playerData->pontuacao) {
+                if (strcmp(guns[playerData->numero - 1], "Sem Arma") == 0) {
+                    guns[playerData->numero - 1] = strcat(gunList->tipoArma, " (Empate)");
+                }
+            }
+            else break;
+            sublist = sublist->next;
         }
+        head = head->next;
+    }
+    head = mainList;
+    while (head != NULL) {
+        s_Gun* gunList = (s_Gun*)head->data;
+        ListElem subList = gunList->subList;
 
-        nArmas++;
-        mainList = mainList->next;
-    } //end first while
-
-    //verifica se existe alguma arma sem atribuicao
-    if (ListLen(nomes) < nArmas) { 
-        while (head != NULL)
-        {
-            s_Gun* gundata = (s_Gun*)head->data;
-            ListElem subList = gundata->subList;
-           
-            //Encontra qual arma que nao está atribuida
-            if (ContainsRec(guns, gundata->tipoArma) == 0) {
-                //Dentro da sublista verifica se existe algum jogador sem arma e atribui a ele
-                while (subList != NULL) {
-                    s_Player* playerData = (s_Player*)subList->data;
-                    ListElem aux = subList->next;
-                    
-                    if (ContainsRec(nomes, playerData->nomeJogador) == 0) {
-                        playerData->atribuda = gundata->tipoArma;
-                      
-                        nomes = Cons(playerData->nomeJogador, nomes);
-                        guns  = Cons(gundata->tipoArma, guns);
-                    }
-
-                    //checamos se ha empate
-                    if (aux != NULL) { //Se subList nao esta no ultimo nodo
-                        s_Player* auxData = (s_Player*)aux->data;
-                        if (playerData->pref == auxData->pref
-                            && playerData->pontuacao == auxData->pontuacao) {
-                            if (ContainsRec(nomes, auxData->nomeJogador) == 0) {
-
-                                strcat(gundata->tipoArma, " Empate");
-                                playerData->atribuda = gundata->tipoArma;
-                                auxData->atribuda = gundata->tipoArma;
-                                nomes = Cons(playerData->nomeJogador, nomes);
-                                guns = Cons(gundata->tipoArma, guns);
-                            }
+        //Encontra qual arma que nao está atribuida
+        if (ContainsRec(armasatribuidas, gunList->tipoArma) == 0) {
+            //Dentro da sublista verifica se existe algum jogador sem arma e atribui a ele
+            while (subList != NULL) {
+                s_Player* playerData = (s_Player*)subList->data;
+                if (strcmp(guns[playerData->numero - 1], "Sem Arma") == 0) {
+                    guns[playerData->numero - 1] = gunList->tipoArma;
+                    armasatribuidas = Cons(gunList->tipoArma, armasatribuidas);
+                }
+                if (subList->next != NULL) {
+                    s_Player* nextplayerData = (s_Player*)subList->next->data;
+                    if (nextplayerData->pref == playerData->pref && nextplayerData->pontuacao == playerData->pontuacao) {
+                        if (strcmp(guns[nextplayerData->numero - 1], "Sem Arma") == 0) {
+                            guns[nextplayerData->numero - 1] = strcat(gunList->tipoArma, "Empate");
                         }
                     }
-                    subList = subList->next;
-                } //end sub-list traverse
-            } 
-            head = head->next;
-        } //end second while
+                }
+                subList = subList->next;
+            }
+        }
+        head = head->next;
     }
-    FreeList(nomes);
-    FreeList(guns);
+    head = mainList;
+    while (head != NULL) {
+        s_Gun* gunList = (s_Gun*)head->data;
+        ListElem sublist = gunList->subList;
+        while (sublist != NULL) {
+            s_Player* aux = (s_Player*)sublist->data;
+            aux->atribuda = guns[aux->numero - 1];
+            sublist = sublist->next;
+        }
+        head = head->next;
+    }
+
 }
+
+
+
+       
 
 //Alinea 3
 
-int Sort2Table(void* player1, void* player2) {
-    s_Player* p1 = (s_Player*)player1;
-    s_Player* p2 = (s_Player*)player2;
+int Sort2Table(s_Gun* gunList) {
+    if (gunList == NULL) return 1;
+    if (gunList->subList == NULL) return 1;
+    if (gunList->subList->next == NULL) return 1;
+    s_Player* p1 = (s_Player*)gunList->subList->data;
+    s_Player* p2 = (s_Player*)gunList->subList->next->data;
 
-    if (strcmp(p1->atribuda, "Sem Arma") != 0 && strcmp(p2->atribuda, "Sem Arma") == 0) return -1;
-    if (strcmp(p1->atribuda, "Sem Arma") == 0 && strcmp(p2->atribuda, "Sem Arma") != 0) return 1;
-    if (strcmp(p1->atribuda, "Sem Arma") != 0 && strcmp(p2->atribuda, "Sem Arma") != 0) {
+    if (strcmp(p1->atribuda, gunList->tipoArma) != 0 && strcmp(p2->atribuda, gunList->tipoArma) == 0) return -1;
+    if (strcmp(p1->atribuda, gunList->tipoArma) == 0 && strcmp(p2->atribuda, gunList->tipoArma) != 0) return 1;
+    if (strcmp(p1->atribuda, gunList->tipoArma) != 0 && strcmp(p2->atribuda, gunList->tipoArma) != 0) {
         if (p1->pontuacao > p2->pontuacao) return -1;
         if (p1->pontuacao < p2->pontuacao) return 1;
     }
-    if (strcmp(p1->atribuda, "Sem Arma") == 0 && strcmp(p2->atribuda, "Sem Arma") == 0) {
+    if (strcmp(p1->atribuda, gunList->tipoArma) == 0 && strcmp(p2->atribuda, gunList->tipoArma) == 0) {
         if (p1->numero > p2->numero) return 1;
         if (p1->numero < p2->numero) return -1;
     }
@@ -257,44 +247,11 @@ int Sort2Table(void* player1, void* player2) {
 ListElem SortMain2Table(ListElem mainList) {
     if (mainList == NULL) return NULL;
     s_Gun* gunList = (s_Gun*)mainList->data;
-    gunList->subList = MergeSort(gunList->subList, &Sort2Table);
+    gunList = MergeSort(gunList, &Sort2Table);
     mainList->next = SortMain2Table(mainList->next);
     return mainList;
 }
 
-void RemoveSemArma(ListElem mainList) {
-    ListElem aux = NULL;
-    ListElem head = mainList;
-    while(mainList != NULL) {
-        s_Gun* MainListData = (s_Gun*)mainList->data;
-        ListElem sublist = MainListData->subList;
-        while (sublist != NULL) {
-            s_Player* subListData = (s_Player*)sublist->data;
-            //Se o jogador ja possui uma arma atribuida, entao
-            //Guardamos o numero desse jogador numa lista
-            if (strcmp(subListData->atribuda, "Sem Arma") != 0) {
-                aux = Cons(subListData->numero, aux);
-            }
-            sublist = sublist->next;
-        }
-        mainList = mainList->next;
-    }
-    //Agora iremos passar pelas listas outra vez e, atribuir a string " "
-    //Para todos jogador contidos na lista aux
-    while (head != NULL) {
-        s_Gun* MainListData = (s_Gun*)head->data;
-        ListElem sublist = MainListData->subList;
-        while (sublist != NULL) {
-            s_Player* subListData = (s_Player*)sublist->data;
-            if (ContainsRec(aux, subListData->numero) == 1) {
-                if (strcmp(MainListData->tipoArma, subListData->atribuda) != 0) subListData->atribuda = " ";
-            }
-            sublist = sublist->next;
-        }
-        head = head->next;
-    }
-    FreeList(aux);
-}
 void ExportTable(ListElem mainlist) {
     if (mainlist == NULL) return NULL;
     else {

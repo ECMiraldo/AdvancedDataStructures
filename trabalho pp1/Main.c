@@ -35,9 +35,9 @@ int main(void) {
 	main = InserirTudo(lista, main);
 	//main = Filter(main, &FilterGuns);
 	main = SortMainList(main);
+	
 	Atribuir(main);
 	SortMain2Table(main);
-	RemoveSemArma(main);
 	showListIterative(main, &ShowGuns);
 
 
