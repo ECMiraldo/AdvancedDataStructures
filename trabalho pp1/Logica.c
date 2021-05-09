@@ -171,11 +171,11 @@ void Atribuir(ListElem mainList) {
                 nomes = Cons(playerData->nomeJogador, nomes);
                 guns  = Cons(gundata->tipoArma, guns);
             }
-            if (ContainsRec(nomes, auxData->nomeJogador) == 0
-             && ContainsRec(guns, gundata->tipoArma) == 0) {
+            if (ContainsRec(nomes, auxData->nomeJogador) == 0) {
                 auxData->atribuda = true;
                 nomes = Cons(playerData->nomeJogador, nomes);
                 guns  = Cons(gundata->tipoArma, guns);
+                nArmas++;;
             }
         }
 
