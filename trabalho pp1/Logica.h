@@ -78,3 +78,4 @@ int Sort2Table(void* player1, void* player2);
 ListElem SortMain2Table(ListElem mainList);
 void Atribuir(ListElem mainList);
 void RemoveSemArma(ListElem mainList);
+void ExportData(char* filename, ListElem main);

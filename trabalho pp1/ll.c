@@ -5,19 +5,6 @@
 #include "Logica.h"
 #include "ll.h"
 
-ListElem Cons(void* data, ListElem tail) {
-	ListElem aux = (ListElem)malloc(sizeof(SListElem));
-	aux->data = data;
-	aux->next = tail;
-	return aux;
-}
-
-ListElem Snoc(ListElem list, void* data) {
-	if (list == NULL) return Cons(data, NULL);
-	else list->next = Snoc(list->next, data);
-	return list;
-}
-
 ListElem addItemHead(ListElem head, void *data) {
 	ListElem aux;
 	
@@ -29,20 +16,6 @@ ListElem addItemHead(ListElem head, void *data) {
 	
 	return aux;
 }
-
-
-ListElem AddItemLast(ListElem head, void* data) {
-	ListElem aux, first;
-	aux = NULL;
-	aux->data = data;
-	first = head;
-	while (head->next != NULL) {
-		head = head->next;
-	}
-	head->next = addItemHead(head, data);
-	return first;
-}
-
 
 ListElem addItemLastRecursive(ListElem head, void *data) {
 	ListElem aux;
@@ -175,10 +148,34 @@ ListElem addItemOrderedRecursive(ListElem head, void *data, int (*compare)(void 
 	return head;
 }
 
+// #####################################################################
+
+ListElem Cons(void* data, ListElem tail) {
+	ListElem aux = (ListElem)malloc(sizeof(SListElem));
+	aux->data = data;
+	aux->next = tail;
+	return aux;
+}
+
+ListElem Snoc(ListElem list, void* data) {
+	if (list == NULL) return Cons(data, NULL);
+	else list->next = Snoc(list->next, data);
+	return list;
+}
+
+void ExportListIterative(FILE* fp, ListElem head, void (*show)(FILE* fp, void* data)) {
+
+	while (head != NULL) {
+		show(fp, head->data);
+		head = head->next;
+	}
+
+}
+
 ListElem Filter(ListElem head, int (*rmv)(void* data)) {
 	ListElem aux = head;
 
-	if (head == NULL) return NULL;	
+	if (head == NULL) return NULL;
 	else if (rmv(head->data) == 1) {
 		aux = head->next;
 		free(head);
@@ -229,13 +226,6 @@ int getIndex(ListElem head, void* data) {
 	else return -1;
 }
 
-void* ReturnData(ListElem head) {
-	if (head == NULL) return NULL;
-	else {
-		return head->data;
-	}
-}
-
 int ListLen(ListElem head) {
 	int aux = 0;
 	while (head != NULL) {
@@ -279,7 +269,7 @@ ListElem MergeSort(ListElem head, int(*cmp)(void* arg1, void* arg2)) {
 	ListElem aux = NULL;
 	Split(head, &aux);
 	head = MergeSort(head, cmp);
-	aux  = MergeSort(aux, cmp);
+	aux = MergeSort(aux, cmp);
 	return Merge(head, aux, cmp);
 }
 

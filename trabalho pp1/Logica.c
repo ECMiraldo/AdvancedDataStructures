@@ -43,7 +43,8 @@ void showPlayer(player* data) {
 }
 
 //Alinea 2
-//Construtor para uma struct s_Player
+
+//Construtor para o conteudo de um nodo da sublista
 s_Player* SubListCons(int n, char* nickname, int pref, int pont) {
     s_Player* aux = (s_Player*)malloc(sizeof(s_Player));
     aux->numero = n;
@@ -53,16 +54,18 @@ s_Player* SubListCons(int n, char* nickname, int pref, int pont) {
     aux->atribuda = "Sem Arma";
     return aux;
 }
-//Construtor para um nodo da lista principal
+
+//Construtor para o conteudo de um nodo da mainlist
 s_Gun* GunCons(char* gun, int numero, char* nick, int pref, int pont) {
     s_Gun* aux = (s_Gun*)malloc(sizeof(s_Gun));
     aux->tipoArma = gun;
     aux->subList = Snoc(NULL, SubListCons(numero, nick, pref, pont));
     return aux;
 }
-//Rodar pela lista procurando uma arma com o mesmo nome gun,
+
+//Rodar pela mainlista procurando uma arma com o mesmo nome gun,
 //Se tiver insere todos os dados na sub-lista dessa arma
-//Se nao encontrar, cria uma sub-lista nova com todos esses dados
+//Se nao encontrar, cria um novo nodo e uma sub-lista nova com todos esses dados
 ListElem InsereArma(ListElem mainList, char* gun, int numero, char* nick, int pref, int pont) {
     if (mainList == NULL) return Cons(GunCons(gun, numero, nick, pref, pont), NULL);
     else {
@@ -193,6 +196,7 @@ void Atribuir(ListElem mainList) {
         while (sublist != NULL) {
             s_Player* aux = (s_Player*)sublist->data;
             aux->atribuda = guns[aux->numero - 1];
+            if (strcmp(gunList->tipoArma, guns[aux->numero - 1]) == 0) aux->pref = -1;
             sublist = sublist->next;
         }
         head = head->next;
@@ -202,7 +206,7 @@ void Atribuir(ListElem mainList) {
 
 void ShowSubList(s_Player* data) {
     if (data != NULL) {
-        printf("Jogador numero: %d \t Nick: %s \t Pont: %d \t %s \n",
+        printf("Jogador numero: %d \t Nick: %s \t Pont: %d \t  %s \n",
             data->numero,
             data->nomeJogador,
             data->pontuacao,
@@ -219,45 +223,62 @@ void ShowGuns(s_Gun* data) {
     printf("\n\n");
 }
 
-       
-
 //Alinea 3
 
-int Sort2Table(s_Gun* gunList) {
-    if (gunList == NULL) return 1;
-    if (gunList->subList == NULL) return 1;
-    if (gunList->subList->next == NULL) return 1;
-    s_Player* p1 = (s_Player*)gunList->subList->data;
-    s_Player* p2 = (s_Player*)gunList->subList->next->data;
-
-    if (strcmp(p1->atribuda, gunList->tipoArma) != 0 && strcmp(p2->atribuda, gunList->tipoArma) == 0) return -1;
-    if (strcmp(p1->atribuda, gunList->tipoArma) == 0 && strcmp(p2->atribuda, gunList->tipoArma) != 0) return 1;
-    if (strcmp(p1->atribuda, gunList->tipoArma) != 0 && strcmp(p2->atribuda, gunList->tipoArma) != 0) {
-        if (p1->pontuacao > p2->pontuacao) return -1;
-        if (p1->pontuacao < p2->pontuacao) return 1;
+int Sort2Table(void* player1, void* player2) {
+    s_Player* p1 = (s_Player*)player1;
+    s_Player* p2 = (s_Player*)player2;
+    
+    //uma vez que ordemos em primeiro lugar por preferencia
+    //sabemos que a preferencia do primeiro jogador da sublista
+    //é igual ao tipo de arma do nodo da lista principal
+    if (p1->pref == -1) {
+        if (p2->pref == -1) {
+            if (p1->pontuacao < p2->pontuacao) return -1;
+            if (p1->pontuacao > p2->pontuacao) return 1;
+            else {
+                if (p1->numero > p2->numero) return 1;
+                else return -1;
+            }
+        }
+        else return -1;
     }
-    if (strcmp(p1->atribuda, gunList->tipoArma) == 0 && strcmp(p2->atribuda, gunList->tipoArma) == 0) {
-        if (p1->numero > p2->numero) return 1;
-        if (p1->numero < p2->numero) return -1;
-    }
+    if (p1->numero > p2->numero) return 1;
+    if (p1->numero < p2->numero) return -1;
+    else return 0;
 }
 
 ListElem SortMain2Table(ListElem mainList) {
     if (mainList == NULL) return NULL;
-    s_Gun* gunList = (s_Gun*)mainList->data;
-    gunList = MergeSort(gunList, &Sort2Table);
+    s_Gun* gunList = (s_Gun*)mainList->data;  
+    gunList->subList = MergeSort(gunList->subList, &Sort2Table);
     mainList->next = SortMain2Table(mainList->next);
     return mainList;
 }
 
-void ExportTable(ListElem mainlist) {
-    if (mainlist == NULL) return NULL;
-    else {
-        s_Gun* MainListData = (s_Gun*)mainlist->data;
-        ListElem sublist = MainListData->subList;
-        s_Player* SubListData = (s_Player*)sublist->data;
+void ExportSublist(FILE* fp, s_Player* data) {
+    if (data != NULL) {
+        fprintf(fp, "Jogador numero: %d \t Nick: %s \t Pont: %d \t  %s \n",
+            data->numero,
+            data->nomeJogador,
+            data->pontuacao,
+            data->atribuda);
+    }
+}
 
+void ExportMainList(FILE* fp, s_Gun* data) {
+    if (data != NULL) {
+        fprintf(fp, "Arma: %s \n", data->tipoArma);
+        ExportListIterative(fp, data->subList, &ExportSublist);
+        fprintf(fp, "\n\n");
+    }
+}
 
-
+void ExportData(char* filename, ListElem main) {
+    FILE* fp = fopen(filename, "w");
+    if (main != NULL) {
+        ExportListIterative(fp, main, &ExportMainList);
+        fprintf(fp,"\n\n");
+        fclose(fp);
     }
 }
