@@ -55,12 +55,12 @@ s_Gun* EmptyGun() {
     return aux;
 }
 
+//Para testar, pedir para mostrar a preferencia, ajuda bastante.
 void ShowSubList(s_Player* data) {
     if (data != NULL) {
-        printf("Jogador numero: %d \t Nick: %s \t Pref: %d \t Pont: %d \t  %s \n",
+        printf("Jogador numero: %d \t Nick: %s \t Pont: %d \t  %s \n",
             data->numero,
             data->nomeJogador,
-            data->pref,
             data->pontuacao,
             data->atribuda);
     }
@@ -70,7 +70,7 @@ void ShowSubList(s_Player* data) {
 void ShowGuns(s_Gun* data) {
     if (data != NULL) {
         printf("Arma: %s \n", data->tipoArma);
-        printf("Qnt: %d", data->qnt);
+        /*printf("Qnt: %d", data->qnt);*/
         printf("\n");
         showListIterative(data->subList, &ShowSubList);
     }
@@ -143,6 +143,7 @@ int CmpPlayer(ListElem subList) {
     if (subList == NULL) return -1;
     s_Player* player = (s_Player*)subList->data;
     if (subList->next != NULL) {
+
         s_Player* playernext = (s_Player*)subList->next->data;
         if (player->pref < playernext->pref) return 1;
         else {
@@ -174,15 +175,20 @@ ListElem Atribuir(ListElem mainList) {
                     //A lista ja se encontra ordenada, ou seja, 
                     //devemos atribuir ao primeiro jogador de cada sublista,
                     //excepto se esse jogador tiver alguma outra arma numa preferencia maior
-                        if (data->qnt > 0 && playerdata->pref == preferenciaactual) {//Se foi a primeira preferencia dele e existe um exemplar dessa arma para atribuir
-                            playerdata->atribuda = "Atribuida";
-                            playerdata->pref = -1;
-                            data->qnt--;
-                            guns[playerdata->numero - 1] = data->tipoArma;
+                        if (data->qnt > 0 && playerdata->pref == preferenciaactual) { //Se foi a primeira preferencia dele e existe um exemplar dessa arma para atribuir
                             if (CmpPlayer(subList) == 0) { //Verificamos se ha empate
+                                playerdata->pref = -1;
+                                data->qnt--;
+                                guns[playerdata->numero - 1] = data->tipoArma;
                                 playerdata->atribuda = "Atribuida (Empate)";
                                 playerdata = (s_Player*)subList->next->data;
                                 playerdata->atribuda = "Atribuida (Empate)";
+                                playerdata->pref = -1;
+                                data->qnt--;
+                                guns[playerdata->numero - 1] = data->tipoArma;
+                            }
+                            else {
+                                playerdata->atribuda = "Atribuida";
                                 playerdata->pref = -1;
                                 data->qnt--;
                                 guns[playerdata->numero - 1] = data->tipoArma;
@@ -225,8 +231,8 @@ int Sort2Table(void* player1, void* player2) {
             if (p1->pontuacao > p2->pontuacao) return -1;
             if (p1->pontuacao < p2->pontuacao) return 1;
             else {
-                if (p1->numero < p2->numero) return 1;
-                else return -1;
+                if (p1->numero < p2->numero) return -1;
+                else return 1;
             }
         }
         else return -1;
