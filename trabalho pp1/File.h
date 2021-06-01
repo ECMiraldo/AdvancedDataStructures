@@ -5,3 +5,4 @@
 #include "Logica.h"
 
 ListElem ReadData(char* filename);
+ListElem Readguns(char* filename);

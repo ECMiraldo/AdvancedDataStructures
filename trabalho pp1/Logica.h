@@ -63,19 +63,17 @@ s_Player* SubListCons(int n, char* nickname, int pref, int pont);
 
 //Main-list
 typedef struct S_Gun {
-    char* tipoArma;
+    char tipoArma[50];
+    int qnt;
     ListElem subList;
 } s_Gun;
 
-s_Gun* GunCons(char* gun, int numero, char* nick, int pref, int pont);
-ListElem InsereArma(ListElem gunlist, char* gun, int numero, char* nick, int pref, int pont);
+s_Gun* EmptyGun();
 void ShowGuns(s_Gun* data);
 ListElem InserirTudo(ListElem gunlist, ListElem MainList);
-int FilterGuns(void* value);
 int SortSubList(void* data1, void* data2);
 ListElem SortMainList(ListElem gunList);
 int Sort2Table(void* player1, void* player2);
 ListElem SortMain2Table(ListElem mainList);
-void Atribuir(ListElem mainList);
-void RemoveSemArma(ListElem mainList);
+ListElem Atribuir(ListElem mainList);
 void ExportData(char* filename, ListElem main);

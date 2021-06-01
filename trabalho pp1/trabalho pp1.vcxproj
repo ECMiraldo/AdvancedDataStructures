@@ -142,8 +142,6 @@
     <ClCompile Include="ll.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Logica.c" />
-    <ClCompile Include="Examples.c" />
-    <ClCompile Include="Examples.h" />
     <ClCompile Include="File.h" />
     <ClCompile Include="File.c" />
   </ItemGroup>
@@ -152,7 +150,8 @@
     <ClInclude Include="ll.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="PP1.txt" />
+    <Text Include="Armas.txt" />
+    <Text Include="Players.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

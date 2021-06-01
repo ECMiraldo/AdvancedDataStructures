@@ -1,0 +1,4 @@
+Metralhadora 2
+Sniper 1
+Pistola 1
+Espingarda 1

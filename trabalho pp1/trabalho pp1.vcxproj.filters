@@ -24,12 +24,6 @@
     <ClCompile Include="Logica.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Examples.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Examples.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="File.h">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -46,7 +40,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="PP1.txt">
+    <Text Include="Armas.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Players.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

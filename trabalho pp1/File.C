@@ -25,6 +25,16 @@ player* ReadPlayer(FILE* file) {
     return p;
 }
 
+s_Gun* ReadGun(FILE* file) {
+    s_Gun* aux = EmptyGun();
+    if (fscanf(file, "%s %d", aux->tipoArma, &aux->qnt) != 2) {
+        free(aux);
+        return NULL;
+    }
+    fgetc(file);
+    return aux;
+}
+
 
 ListElem ReadData(char* filename) {
     FILE* fp = fopen(filename, "r");
@@ -45,6 +55,26 @@ ListElem ReadData(char* filename) {
     }
     return list;
 }
+
+ListElem Readguns(char* filename) {
+    FILE* fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("Error opening file");
+        return NULL;
+    }
+    ListElem list = NULL;
+    while (!feof(fp)) {
+        s_Gun* aux = ReadGun(fp);
+        if (aux != NULL) list = Snoc(list, aux);
+        else {
+            printf("Couldnt read gun data");
+            return NULL;
+        }
+    }
+    return list;
+}
+
+
 
 
 

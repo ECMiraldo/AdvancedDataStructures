@@ -11,12 +11,13 @@
 int main(void) {
 	ListElem lista = NULL;
 	ListElem main = NULL;
-	lista = ReadData("PP1.txt");
+	lista = ReadData("Players.txt");
+	main = Readguns("Armas.txt");
 	main = InserirTudo(lista, main);
 	main = SortMainList(main);
-	Atribuir(main);
+	main = Atribuir(main);
 	main = SortMainList(main);
 	main = SortMain2Table(main);
 	showListIterative(main, &ShowGuns);
-	ExportData("PP1_result.txt", main);
+	/*ExportData("PP1_result.txt", main);*/
 }
