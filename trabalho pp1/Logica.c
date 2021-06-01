@@ -43,7 +43,6 @@ void showPlayer(player* data) {
 }
 
 
-
 //Alinea 2
 
 //Nodo vazio da lista principal
@@ -156,11 +155,11 @@ int CmpPlayer(ListElem subList) {
     else return -1;
 }
 
-ListElem Atribuir(ListElem mainList) {
+ListElem Atribuir(ListElem mainList, ListElem playerList) {
     ListElem playersatribuidos = Empty;
     int preferenciaactual = 0;
-    char* guns[5];
-    for (int i = 0; i < 5; i++) {
+    char* guns[TAMANHO];
+    for (int i = 0; i < ListLen(playerList); i++) {
         guns[i] = "Sem Arma";
     }
     while (preferenciaactual < 5) {

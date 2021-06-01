@@ -70,10 +70,7 @@ typedef struct S_Gun {
 
 s_Gun* EmptyGun();
 void ShowGuns(s_Gun* data);
-ListElem InserirTudo(ListElem gunlist, ListElem MainList);
-int SortSubList(void* data1, void* data2);
 ListElem SortMainList(ListElem gunList);
-int Sort2Table(void* player1, void* player2);
 ListElem SortMain2Table(ListElem mainList);
-ListElem Atribuir(ListElem mainList);
+ListElem Atribuir(ListElem mainList, ListElem playerList);
 void ExportData(char* filename, ListElem main);
