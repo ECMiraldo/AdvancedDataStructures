@@ -14,22 +14,6 @@ player* EmptyPlayer() {
     }
     return aux;
 }
-player* Constructor(player* aux, int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3, char* pref4, int pont4, char* pref5, int pont5) {
-    aux->playerid = numero;
-    strcpy(aux->nickname, nomeJogador);
-    strcpy(aux->preferences[0].gun, pref1);
-    strcpy(aux->preferences[1].gun, pref2);
-    strcpy(aux->preferences[2].gun, pref3);
-    strcpy(aux->preferences[3].gun, pref4);
-    strcpy(aux->preferences[4].gun, pref5);
-
-    aux->preferences[0].score = pont1;
-    aux->preferences[1].score = pont2;
-    aux->preferences[2].score = pont3;
-    aux->preferences[3].score = pont4;
-    aux->preferences[4].score = pont5;
-    return aux;
-}
 
 // Escrita na consola do dados de um jogador
 void showPlayer(player* data) {     

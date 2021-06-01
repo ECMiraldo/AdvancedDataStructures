@@ -19,5 +19,5 @@ int main(void) {
 	main = SortMainList(main);
 	main = SortMain2Table(main);
 	showListIterative(main, &ShowGuns);
-	/*ExportData("PP1_result.txt", main);*/
+	ExportData("PP1_result.txt", main);
 }

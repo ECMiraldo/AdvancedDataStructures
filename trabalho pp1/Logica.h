@@ -30,14 +30,11 @@ typedef struct dados
 }player;
 
 //Alinea 1 functions
-
 player* EmptyPlayer();
-player* Constructor(player* aux, int numero, char* nomeJogador, char* pref1, int pont1, char* pref2, int pont2, char* pref3, int pont3, char* pref4, int pont4, char* pref5, int pont5);
-//Used to print player's data as show function
-void showPlayer(player* data);
+
+
 
 //Alinea 2
-
 /*
 * Metralha -> [Jose(true), Maria, carlos]
 * Sniper -> [Joao(true), Joana, Maria, Carlos]
@@ -70,6 +67,7 @@ typedef struct S_Gun {
 
 s_Gun* EmptyGun();
 void ShowGuns(s_Gun* data);
+ListElem InserirTudo(ListElem playerlist, ListElem mainList);
 ListElem SortMainList(ListElem gunList);
 ListElem SortMain2Table(ListElem mainList);
 ListElem Atribuir(ListElem mainList, ListElem playerList);

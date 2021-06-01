@@ -1,25 +1,25 @@
+Arma: Metralhadora 
+Jogador numero: 2 	 Nick: Jose 	 Pont: 96 	  Atribuida (Empate) 
+Jogador numero: 4 	 Nick: Maria 	 Pont: 96 	  Atribuida (Empate) 
+Jogador numero: 5 	 Nick: Carlos 	 Pont: 63 	    
+
+
 Arma: Sniper 
-Jogador numero: 1 	 Nick: Joao 	 Pont: 75 	  Sniper 
-Jogador numero: 3 	 Nick: Joana 	 Pont: 41 	  Espingarda 
-Jogador numero: 4 	 Nick: Maria 	 Pont: 86 	  Sem Arma 
-Jogador numero: 5 	 Nick: Carlos 	 Pont: 63 	  Pistola 
-
-
-Arma: Espingarda 
-Jogador numero: 3 	 Nick: Joana 	 Pont: 52 	  Espingarda 
-Jogador numero: 1 	 Nick: Joao 	 Pont: 76 	  Sniper 
+Jogador numero: 1 	 Nick: Joao 	 Pont: 75 	  Atribuida 
+Jogador numero: 3 	 Nick: Joana 	 Pont: 41 	    
+Jogador numero: 4 	 Nick: Maria 	 Pont: 86 	    
+Jogador numero: 5 	 Nick: Carlos 	 Pont: 63 	    
 
 
 Arma: Pistola 
-Jogador numero: 5 	 Nick: Carlos 	 Pont: 44 	  Pistola 
-Jogador numero: 1 	 Nick: Joao 	 Pont: 64 	  Sniper 
-Jogador numero: 3 	 Nick: Joana 	 Pont: 52 	  Espingarda 
+Jogador numero: 5 	 Nick: Carlos 	 Pont: 44 	  Atribuida 
+Jogador numero: 1 	 Nick: Joao 	 Pont: 64 	    
+Jogador numero: 3 	 Nick: Joana 	 Pont: 52 	    
 
 
-Arma: Metralhadora 
-Jogador numero: 2 	 Nick: Jose 	 Pont: 96 	  Metralhadora 
-Jogador numero: 4 	 Nick: Maria 	 Pont: 84 	  Sem Arma 
-Jogador numero: 5 	 Nick: Carlos 	 Pont: 63 	  Pistola 
+Arma: Espingarda 
+Jogador numero: 3 	 Nick: Joana 	 Pont: 52 	  Atribuida 
+Jogador numero: 1 	 Nick: Joao 	 Pont: 76 	    
 
 
 
