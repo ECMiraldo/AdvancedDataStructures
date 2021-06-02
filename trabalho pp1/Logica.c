@@ -52,7 +52,7 @@ void ShowSubList(s_Player* data) {
 //Mostra a lista principal
 void ShowGuns(s_Gun* data) {
     if (data != NULL) {
-        printf("Arma: %s \n", data->tipoArma);
+        printf("Arma: %s \nQnt: %d \n", data->tipoArma, data->qnt);
         /*printf("Qnt: %d", data->qnt);*/
         printf("\n");
         showListIterative(data->subList, &ShowSubList);
@@ -139,11 +139,11 @@ int CmpPlayer(ListElem subList) {
     else return -1;
 }
 
-ListElem Atribuir(ListElem mainList, ListElem playerList) {
+ListElem Atribuir(ListElem mainList, int Nplayers) {
     ListElem playersatribuidos = Empty;
     int preferenciaactual = 0;
     char* guns[TAMANHO];
-    for (int i = 0; i < ListLen(playerList); i++) {
+    for (int i = 0; i < Nplayers; i++) {
         guns[i] = "Sem Arma";
     }
     while (preferenciaactual < 5) {
@@ -185,7 +185,7 @@ ListElem Atribuir(ListElem mainList, ListElem playerList) {
         }
         preferenciaactual++;
     }
-    //Se depois deste algoritmo, o jogador ainda esta sem arma, entao indicamos isso
+    //Se depois deste algoritmo, o jogador ainda esta sem arma, entao indicamos
     ListElem aux = mainList;
     while (aux != NULL) {
         s_Gun* data = (s_Gun*)aux->data;
@@ -193,6 +193,7 @@ ListElem Atribuir(ListElem mainList, ListElem playerList) {
         while (subList != NULL) {
             s_Player* playerdata = (s_Player*)subList->data;
             if (guns[playerdata->numero - 1] == "Sem Arma") playerdata->atribuda = "Sem Arma";
+            //playerdata->atribuda = guns[playerdata->numero -1];
             subList = subList->next;
         }
         aux = aux->next;
@@ -206,9 +207,6 @@ int Sort2Table(void* player1, void* player2) {
     s_Player* p1 = (s_Player*)player1;
     s_Player* p2 = (s_Player*)player2;
     
-    //uma vez que ordemos em primeiro lugar por preferencia
-    //sabemos que a preferencia do primeiro jogador da sublista
-    //é igual ao tipo de arma do nodo da lista principal
     if (p1->pref == -1) {
         if (p2->pref == -1) {
             if (p1->pontuacao > p2->pontuacao) return -1;

@@ -1,5 +1,6 @@
-1   Joao    Sniper       75    Espingarda   76      Pistola 64
-2   Jose    Metralhadora 96    -            0       -       0
-3   Joana   Espingarda   52    Pistola      52      Sniper  41
-4   Maria   Metralhadora 96    Sniper       86      -       0
-5   Carlos  Sniper       63    Metralhadora 63      Pistola 44
+1   Joao    Sniper       75    Espingarda   76      Pistola 64 - 0 - 0
+2   Jose    Metralhadora 96    -            0       -       0  - 0 - 0
+3   Joana   Espingarda   52    Pistola      52      Sniper  41 - 0 - 0
+4   Maria   Metralhadora 96    Sniper       86      -       0  - 0 - 0
+5   Carlos  Sniper       63    Metralhadora 63      Pistola 44 - 0 - 0
+6   MaisUM  Sniper	     54    Pistola      44	    Metralhadora 54 - 0 - 0

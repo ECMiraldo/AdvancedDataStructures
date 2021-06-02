@@ -9,7 +9,7 @@
 //consome o \n
 player* ReadPlayer(FILE* file) {
     player* p = EmptyPlayer();
-    if (fscanf(file, "%d %s %s %d %s %d %s %d",
+    if (fscanf(file, "%d %s %s %d %s %d %s %d %s %d %s %d",
                        &p->playerid,
                        &p->nickname,
                        &p->preferences[0].gun,
@@ -17,7 +17,11 @@ player* ReadPlayer(FILE* file) {
                        &p->preferences[1].gun,
                        &p->preferences[1].score,
                        &p->preferences[2].gun,
-                       &p->preferences[2].score) != 8) {
+                       &p->preferences[2].score,
+                       &p->preferences[3].gun,
+                       &p->preferences[3].score,
+                       &p->preferences[4].gun,
+                       &p->preferences[4].score) != 12) {
         free(p);
         return NULL;  
     }

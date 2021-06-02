@@ -15,7 +15,8 @@ int main(void) {
 	main = Readguns("Armas.txt");
 	main = InserirTudo(lista, main);
 	main = SortMainList(main);
-	main = Atribuir(main, lista);
+	main = Atribuir(main, ListLen(lista));
+	FreeList(lista);
 	main = SortMainList(main);
 	main = SortMain2Table(main);
 	showListIterative(main, &ShowGuns);

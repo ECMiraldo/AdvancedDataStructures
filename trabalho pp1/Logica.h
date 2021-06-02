@@ -70,5 +70,5 @@ void ShowGuns(s_Gun* data);
 ListElem InserirTudo(ListElem playerlist, ListElem mainList);
 ListElem SortMainList(ListElem gunList);
 ListElem SortMain2Table(ListElem mainList);
-ListElem Atribuir(ListElem mainList, ListElem playerList);
+ListElem Atribuir(ListElem mainList, int Nplayers);
 void ExportData(char* filename, ListElem main);
